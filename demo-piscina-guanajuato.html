@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Gestión de Piscina — Guanajuato</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --azul:#1B3F7A;--azul2:#2A5BAD;--azul-claro:#EEF4FB;
+  --verde:#16A34A;--amarillo:#D97706;--rojo:#DC2626;
+  --gris1:#F8F9FC;--gris2:#F0F2F7;--gris3:#E2E7F0;
+  --texto:#1A2033;--muted:#6B7A99;--blanco:#FFFFFF;
+  --font:'Plus Jakarta Sans',sans-serif;
+}
+body{font-family:var(--font);background:var(--gris1);color:var(--texto);min-height:100vh}
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+
+/* LANDING */
+.landing-nav{background:var(--blanco);border-bottom:1px solid var(--gris3);padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--azul)}
+.logo-circle{width:36px;height:36px;background:var(--azul);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-circle svg{width:20px;height:20px;fill:white}
+.btn-login{background:var(--azul);color:white;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.btn-login:hover{background:var(--azul2)}
+.hero{background:linear-gradient(135deg,#EEF4FB 0%,#DDEAFA 100%);padding:64px 40px;display:flex;align-items:center;gap:56px}
+.hero-text{flex:1}
+.hero-badge{display:inline-block;background:var(--azul);color:white;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:18px;letter-spacing:.6px}
+.hero-text h1{font-size:34px;font-weight:700;color:var(--azul);line-height:1.2;margin-bottom:14px}
+.hero-text p{color:var(--muted);font-size:15px;line-height:1.65;margin-bottom:30px}
+.hero-btns{display:flex;gap:12px}
+.btn-primary{background:var(--azul);color:white;border:none;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);transition:.2s}
+.btn-primary:hover{background:var(--azul2)}
+.btn-outline{background:white;color:var(--azul);border:1.5px solid var(--azul);padding:13px 28px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.hero-card{background:white;border-radius:16px;padding:36px 40px;box-shadow:0 8px 40px rgba(27,63,122,.14);text-align:center;min-width:220px}
+.shield-big{width:84px;height:84px;margin:0 auto 16px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.shield-big svg{width:44px;height:44px;fill:white}
+.hero-card p{font-size:14px;font-weight:700;color:var(--azul);letter-spacing:.6px}
+.hero-card small{font-size:11px;color:var(--muted)}
+.features-section{padding:56px 40px;background:white}
+.features-section h2{text-align:center;font-size:26px;font-weight:700;color:var(--azul);margin-bottom:38px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.feat-card{background:var(--gris1);border:1px solid var(--gris3);border-radius:12px;padding:26px}
+.feat-icon{width:46px;height:46px;background:var(--azul-claro);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat-icon svg{width:24px;height:24px;stroke:var(--azul);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.feat-card h3{font-size:15px;font-weight:700;color:var(--azul);margin-bottom:8px}
+.feat-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* LOGIN */
+.login-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#E8F0FB,#D5E6F8);padding:40px}
+.login-card{background:white;border-radius:16px;overflow:hidden;display:flex;box-shadow:0 12px 48px rgba(27,63,122,.18);max-width:780px;width:100%}
+.login-left{background:var(--azul);padding:44px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.ll-icon{width:60px;height:60px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:26px}
+.ll-icon svg{width:32px;height:32px;fill:white}
+.login-left h2{color:white;font-size:21px;font-weight:700;margin-bottom:8px}
+.login-left p{color:rgba(255,255,255,.68);font-size:13px}
+.login-right{padding:44px;flex:1}
+.login-right h2{font-size:23px;font-weight:700;color:var(--azul);margin-bottom:6px}
+.lsub{color:var(--muted);font-size:13px;margin-bottom:28px}
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.fg label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--gris3);border-radius:8px;padding:11px 14px;font-size:14px;font-family:var(--font);color:var(--texto);outline:none;background:white;transition:.2s}
+.fg input:focus,.fg select:focus{border-color:var(--azul2)}
+.fg textarea{resize:none}
+.btn-block{width:100%;background:var(--azul);color:white;border:none;padding:13px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);margin-bottom:10px}
+.btn-block:hover{background:var(--azul2)}
+.btn-block-outline{width:100%;background:white;color:var(--azul);border:1.5px solid var(--azul);padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.back-link{text-align:center;margin-top:16px;font-size:13px;color:var(--azul);cursor:pointer;text-decoration:underline}
+
+/* APP */
+.app-wrap{flex:1;display:flex;min-height:100vh}
+.sidebar{width:228px;background:var(--azul);min-height:100vh;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.sidebar-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
+.sidebar-brand span{color:white;font-size:13.5px;font-weight:700}
+.sidebar-brand small{color:rgba(255,255,255,.5);font-size:10px;display:block}
+.sidebar-nav{padding:12px 10px;flex:1;overflow-y:auto}
+.s-item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.62);transition:.15s;margin-bottom:2px}
+.s-item:hover{background:rgba(255,255,255,.1);color:white}
+.s-item.active{background:rgba(255,255,255,.18);color:white}
+.s-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sidebar-footer{padding:16px 18px;border-top:1px solid rgba(255,255,255,.12)}
+.s-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.55);font-size:13px;cursor:pointer}
+.s-logout:hover{color:white}
+.s-logout svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.app-main{flex:1;background:var(--gris1);overflow-y:auto}
+.app-topbar{background:white;border-bottom:1px solid var(--gris3);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.app-topbar h1{font-size:18px;font-weight:700;color:var(--azul)}
+.app-topbar .tsub{font-size:12px;color:var(--muted)}
+.avatar-btn{width:36px;height:36px;background:var(--azul);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px}
+.app-content{padding:24px 28px}
+.tab-view{display:none}.tab-view.active{display:block}
+
+/* COMMONS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat-card{background:white;border:1px solid var(--gris3);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.stat-card.blue::before{background:var(--azul)}
+.stat-card.green::before{background:var(--verde)}
+.stat-card.yellow::before{background:var(--amarillo)}
+.stat-card.red::before{background:var(--rojo)}
+.stat-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.stat-val{font-size:26px;font-weight:700;color:var(--texto)}
+.card{background:white;border:1px solid var(--gris3);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.card-head{padding:15px 20px;border-bottom:1px solid var(--gris3);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-head h2{font-size:14px;font-weight:700;color:var(--texto)}
+.cmuted{font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+th{background:var(--gris2);padding:10px 18px;text-align:left;font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px}
+td{padding:12px 18px;border-bottom:1px solid var(--gris3);font-size:13px;color:var(--texto);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--gris1)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.pill-green{background:#DCFCE7;color:#166534}
+.pill-red{background:#FEE2E2;color:#991B1B}
+.pill-yellow{background:#FEF9C3;color:#854D0E}
+.pill-blue{background:#DBEAFE;color:#1E40AF}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.av{width:30px;height:30px;border-radius:50%;background:var(--azul-claro);display:inline-flex;align-items:center;justify-content:center;color:var(--azul);font-weight:700;font-size:10.5px;margin-right:8px;vertical-align:middle;flex-shrink:0}
+.btn-add{background:var(--azul);color:white;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.btn-add:hover{background:var(--azul2)}
+.act-btn{background:var(--gris2);border:1px solid var(--gris3);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;color:var(--texto);font-family:var(--font);margin-right:3px}
+.act-btn:hover{background:var(--gris3)}
+.top-bar{display:flex;gap:10px;margin-bottom:18px}
+.search-inp{flex:1;border:1.5px solid var(--gris3);border-radius:8px;padding:9px 14px;font-size:13px;font-family:var(--font);color:var(--texto);outline:none}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.section-title{font-size:13px;font-weight:700;color:var(--azul);margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--gris3)}
+.info-box{background:var(--azul-claro);border:1px solid #BFDBF7;border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--azul2);line-height:1.6;margin-bottom:16px}
+.warn-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:12px 16px;font-size:12.5px;color:#92400E;line-height:1.6;margin-bottom:16px}
+.export-btns{display:flex;gap:6px}
+.btn-pdf{background:#DC2626;color:white;border:none;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.btn-xls{background:#166534;color:white;border:none;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.req-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.req-card{background:white;border:1px solid var(--gris3);border-radius:12px;padding:18px}
+.req-card h3{font-size:13.5px;font-weight:700;color:var(--azul);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.req-item{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--texto);line-height:1.55;margin-bottom:8px}
+.req-check{width:16px;height:16px;background:var(--azul-claro);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.req-check svg{width:10px;height:10px;stroke:var(--azul);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.med-box{background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:16px;margin-bottom:18px}
+.med-box h3{font-size:13px;font-weight:700;color:#166534;margin-bottom:8px}
+.med-box p{font-size:12.5px;color:#166534;line-height:1.7}
+.costos-cat{background:var(--azul) !important;color:white !important;font-size:11px;font-weight:700;padding:8px 18px;letter-spacing:.5px;pointer-events:none}
+.precio{font-weight:700;color:var(--azul);text-align:right}
+.attend-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.attend-box{background:white;border:1px solid var(--gris3);border-radius:12px;padding:22px;text-align:center}
+.attend-box h3{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:5px}
+.attend-box p{font-size:12px;color:var(--muted);margin-bottom:16px}
+.big-num{font-size:28px;font-weight:700;letter-spacing:4px;text-align:center;padding:13px;border:2px solid var(--gris3);border-radius:10px;width:100%;background:var(--gris1);color:var(--texto);font-family:var(--font)}
+.comprobante{background:white;border:1px solid var(--gris3);border-radius:12px;max-width:500px;margin:0 auto;overflow:hidden}
+.comp-head{background:var(--azul);padding:24px;text-align:center;color:white}
+.comp-head h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.comp-head p{font-size:12px;opacity:.72}
+.comp-body{padding:24px}
+.comp-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gris3);font-size:13px}
+.comp-row:last-child{border-bottom:none}
+.comp-key{color:var(--muted)}
+.comp-val{font-weight:600;color:var(--texto)}
+.comp-total{background:var(--azul-claro);border-radius:8px;padding:12px 16px;display:flex;justify-content:space-between;margin-top:12px;font-size:15px;font-weight:700;color:var(--azul)}
+.comp-note{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
+.bar-group{display:flex;flex-direction:column;gap:10px}
+.bar-item{display:flex;flex-direction:column;gap:4px}
+.bar-label-row{display:flex;justify-content:space-between;font-size:12px}
+.bar-track{background:var(--gris3);border-radius:4px;height:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px}
+.settings-card{background:white;border:1px solid var(--gris3);border-radius:12px;padding:22px;margin-bottom:16px}
+.settings-card h3{font-size:14px;font-weight:700;color:var(--texto);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--gris3)}
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris3)}
+.setting-row:last-child{border-bottom:none}
+.toggle{width:38px;height:22px;background:var(--azul);border-radius:11px;position:relative;cursor:pointer;flex-shrink:0}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;right:3px;transition:.2s}
+.toggle.off{background:var(--gris3)}
+.toggle.off::after{right:19px}
+
+.price-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--gris3)}
+.price-row:last-child{border-bottom:none}
+.price-row label{font-size:12.5px;color:var(--texto);font-weight:500}
+.price-input-wrap{display:flex;align-items:center;gap:4px;background:var(--gris1);border:1.5px solid var(--gris3);border-radius:7px;padding:4px 8px}
+.price-input-wrap span{font-size:13px;color:var(--muted);font-weight:600}
+.price-input-wrap input{border:none;background:transparent;width:72px;font-size:13px;font-weight:700;color:var(--azul);font-family:var(--font);outline:none;text-align:right}
+.toast-msg{position:fixed;bottom:28px;right:28px;background:var(--azul);color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;display:none;box-shadow:0 4px 20px rgba(27,63,122,.3)}
+.toast-msg.show{display:block}
+
+.renov-option{background:white;border:1.5px solid var(--gris3);border-radius:12px;padding:16px;cursor:pointer;transition:.2s;text-align:center}
+.renov-option:hover{border-color:var(--azul);transform:translateY(-2px)}
+.renov-option.active-opt{border-color:var(--azul);background:var(--azul-claro)}
+.renov-opt-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 10px}
+.renov-opt-title{font-size:14px;font-weight:700;color:var(--texto);margin-bottom:4px}
+.renov-opt-desc{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:8px}
+.renov-opt-tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.dia-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gris2);border:1.5px solid var(--gris3);border-radius:7px;padding:5px 10px;font-size:12px;font-weight:500;cursor:pointer;transition:.15s;user-select:none}
+.dia-chip:hover{border-color:var(--azul)}
+.dia-chip input{accent-color:var(--azul);cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LANDING ══════════ -->
+<div class="screen active" id="s-landing">
+  <nav class="landing-nav">
+    <div class="brand">
+      <div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/></svg></div>
+      Sistema de Gestión de Piscina
+    </div>
+    <button class="btn-login" onclick="go('s-login')">Iniciar Sesión</button>
+  </nav>
+  <div class="hero">
+    <div class="hero-text">
+      <span class="hero-badge">GOBIERNO DEL ESTADO DE GUANAJUATO</span>
+      <h1>Sistema de Gestión de Piscina</h1>
+      <p>Gestiona nadadores, suscripciones, pagos y reportes de manera eficiente. Exporta en PDF y Excel con un clic.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="go('s-login')">Comenzar Ahora</button>
+        <button class="btn-outline">Conocer Más</button>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="shield-big"><svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/></svg></div>
+      <p>GUANAJUATO</p>
+      <small>GOBIERNO DE LA GENTE</small>
+    </div>
+  </div>
+  <div class="features-section">
+    <h2>Características Principales</h2>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+        <h3>Gestión de Nadadores</h3>
+        <p>Registra menores y adultos con todos sus requisitos: CURP, INE, comprobante de domicilio y valoración médica</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg></div>
+        <h3>Planes y Costos Reales</h3>
+        <p>Mensualidades de 1 a 6 clases, matronatación, preequipo, equipo, inscripción y reinscripción</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+        <h3>Exportar PDF y Excel</h3>
+        <p>Genera reportes de asistencia, pagos y estadísticas. Descarga comprobantes en el formato que necesites</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div class="screen" id="s-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-left">
+        <div class="ll-icon"><svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/></svg></div>
+        <h2>Sistema de Gestión de Piscina</h2>
+        <p>Gobierno del Estado de Guanajuato</p>
+      </div>
+      <div class="login-right">
+        <h2>Iniciar Sesión</h2>
+        <p class="lsub">Ingresa tus credenciales para acceder al sistema</p>
+        <div class="fg"><label>Correo Electrónico</label><input type="email" value="admin@guanajuato.gob.mx"></div>
+        <div class="fg"><label>Contraseña</label><input type="password" value="••••••••"></div>
+        <button class="btn-block" onclick="go('s-app');setTab('t-reportes')">Iniciar Sesión</button>
+        <button class="btn-block-outline" onclick="go('s-app');setTab('t-reportes')">Entrar como invitado</button>
+        <p class="back-link" onclick="go('s-landing')">Volver al inicio</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div class="screen" id="s-app">
+  <div class="app-wrap">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z"/></svg></div>
+        <div><span>Gestión Piscina</span><small>Guanajuato</small></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="s-item active" id="nav-reportes" onclick="setTab('t-reportes')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Reportes
+        </div>
+        <div class="s-item" id="nav-nadadores" onclick="setTab('t-nadadores')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Nuevo Nadador
+        </div>
+        <div class="s-item" id="nav-asistencia" onclick="setTab('t-asistencia')">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Asistencia
+        </div>
+        <div class="s-item" id="nav-planes" onclick="setTab('t-planes')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>Planes y Costos
+        </div>
+        <div class="s-item" id="nav-comprobante" onclick="setTab('t-comprobante')">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>Comprobante de Pago
+        </div>
+        <div class="s-item" id="nav-renovacion" onclick="setTab('t-renovacion')">
+          <svg viewBox="0 0 24 24"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>Renovación
+        </div>
+        <div class="s-item" id="nav-ajustes" onclick="setTab('t-ajustes')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ajustes
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="s-logout" onclick="go('s-landing')">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Cerrar Sesión
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <div class="app-topbar">
+        <div>
+          <h1 id="app-title">Reportes de Nadadores</h1>
+          <div class="tsub" id="app-sub">Vista general del sistema</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div id="hdr-export" class="export-btns" style="display:none">
+            <button class="btn-pdf">PDF</button>
+            <button class="btn-xls">Excel</button>
+          </div>
+          <div class="avatar-btn">AD</div>
+        </div>
+      </div>
+
+      <div class="app-content">
+
+        <!-- ─── REPORTES ─── -->
+        <div class="tab-view active" id="t-reportes">
+          <div class="stats-row">
+            <div class="stat-card blue"><div class="stat-label">Total Nadadores</div><div class="stat-val">47</div></div>
+            <div class="stat-card green"><div class="stat-label">Nadadores Activos</div><div class="stat-val">38</div></div>
+            <div class="stat-card yellow"><div class="stat-label">Inactivos / Pendientes</div><div class="stat-val">9</div></div>
+            <div class="stat-card red"><div class="stat-label">Ingresos del Mes</div><div class="stat-val">$18,650</div></div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <h2>Lista de Nadadores</h2>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="cmuted">47 registros</span>
+                <button class="btn-pdf">PDF</button>
+                <button class="btn-xls">Excel</button>
+              </div>
+            </div>
+            <table>
+              <thead><tr><th>Nombre</th><th>Tipo</th><th>Plan</th><th>Clases/sem</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td><span class="av">MR</span>María Rodríguez</td><td>Adulto</td><td>Mensualidad</td><td>3 clases</td><td>16/04/2026</td><td><span class="pill pill-green"><span class="pill-dot"></span>Activo</span></td></tr>
+                <tr><td><span class="av">JL</span>Juan López</td><td>Adulto</td><td>Mensualidad</td><td>5 clases</td><td>20/04/2026</td><td><span class="pill pill-green"><span class="pill-dot"></span>Activo</span></td></tr>
+                <tr><td><span class="av">AN</span>Ana Navarro</td><td>Menor</td><td>Matronatación</td><td>2 clases</td><td>19/03/2026</td><td><span class="pill pill-yellow"><span class="pill-dot"></span>Por vencer</span></td></tr>
+                <tr><td><span class="av">PG</span>Pedro García</td><td>Adulto</td><td>Preequipo</td><td>—</td><td>10/03/2026</td><td><span class="pill pill-red"><span class="pill-dot"></span>Vencido</span></td></tr>
+                <tr><td><span class="av">LT</span>Luisa Torres</td><td>Adulto</td><td>Mensualidad</td><td>1 clase</td><td>05/04/2026</td><td><span class="pill pill-green"><span class="pill-dot"></span>Activo</span></td></tr>
+                <tr><td><span class="av">SC</span>Sofía Cruz</td><td>Menor</td><td>Matronatación</td><td>4 clases</td><td>01/04/2026</td><td><span class="pill pill-green"><span class="pill-dot"></span>Activo</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="two-col">
+            <div class="card">
+              <div class="card-head"><h2>Asistencia por Turno</h2><div class="export-btns"><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div></div>
+              <div style="padding:18px 20px"><div class="bar-group">
+                <div class="bar-item"><div class="bar-label-row"><span>Lun–Vie Mañana</span><span style="color:var(--muted)">22</span></div><div class="bar-track"><div class="bar-fill" style="width:68%;background:var(--azul)"></div></div></div>
+                <div class="bar-item"><div class="bar-label-row"><span>Lun–Vie Tarde</span><span style="color:var(--muted)">15</span></div><div class="bar-track"><div class="bar-fill" style="width:46%;background:var(--azul2)"></div></div></div>
+                <div class="bar-item"><div class="bar-label-row"><span>Sábado Mañana</span><span style="color:var(--muted)">10</span></div><div class="bar-track"><div class="bar-fill" style="width:30%;background:#93C5FD"></div></div></div>
+              </div></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h2>Estado de Membresías</h2></div>
+              <div style="padding:18px 20px"><div class="bar-group">
+                <div class="bar-item"><div class="bar-label-row"><span style="color:var(--verde)">Activos</span><span style="color:var(--muted)">38</span></div><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--verde)"></div></div></div>
+                <div class="bar-item"><div class="bar-label-row"><span style="color:var(--amarillo)">Por vencer</span><span style="color:var(--muted)">5</span></div><div class="bar-track"><div class="bar-fill" style="width:11%;background:var(--amarillo)"></div></div></div>
+                <div class="bar-item"><div class="bar-label-row"><span style="color:var(--rojo)">Vencidos</span><span style="color:var(--muted)">4</span></div><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--rojo)"></div></div></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── NUEVO NADADOR ─── -->
+        <div class="tab-view" id="t-nadadores">
+          <div class="req-grid">
+            <div class="req-card">
+              <h3>👧 Requisitos — Menor de Edad</h3>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>CURP del menor (copia a color)</span></div>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>INE del padre o tutor vigente (ambos lados, copia a color)</span></div>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>Comprobante de domicilio (copia a color)</span></div>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>Valoración médica en sitio (debe ser aprobada)</span></div>
+            </div>
+            <div class="req-card">
+              <h3>🧑 Requisitos — Adulto</h3>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>CURP (copia a color)</span></div>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>INE vigente (ambos lados, copia a color)</span></div>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>Comprobante de domicilio (copia a color)</span></div>
+              <div class="req-item"><div class="req-check"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div><span>Valoración médica en sitio — $90.00 MXN</span></div>
+            </div>
+          </div>
+          <div class="med-box">
+            <h3>⏰ Horario de Valoración Médica</h3>
+            <p><strong>Lunes a Viernes:</strong> 3:00 pm – 8:00 pm &nbsp;|&nbsp; <strong>Sábado:</strong> 8:00 am – 1:00 pm &nbsp;|&nbsp; <strong>Costo:</strong> $90.00 MXN &nbsp;|&nbsp; Obligatoria, se realiza en las instalaciones.</p>
+          </div>
+          <div class="card" style="max-width:600px">
+            <div class="card-head"><h2>Registrar Nuevo Nadador</h2></div>
+            <div style="padding:22px">
+              <div class="section-title">Datos Personales</div>
+              <div class="form-grid2">
+                <div class="fg"><label>Nombre(s)</label><input value="Carlos"></div>
+                <div class="fg"><label>Apellidos</label><input value="Hernández Ruiz"></div>
+                <div class="fg"><label>Fecha de Nacimiento</label><input type="date" value="1992-06-15"></div>
+                <div class="fg"><label>Teléfono</label><input value="477-555-1234"></div>
+                <div class="fg" style="grid-column:1/-1"><label>CURP</label><input value="HERC920615HGTRZL03"></div>
+                <div class="fg"><label>Tipo de Nadador</label><select><option>Adulto</option><option>Menor de edad</option></select></div>
+                <div class="fg"><label>Valoración Médica</label><select><option>Aprobada ✓</option><option>Pendiente</option></select></div>
+              </div>
+              <div class="section-title">Plan y Pago</div>
+              <div class="form-grid2">
+                <div class="fg"><label>Concepto Inicial</label><select id="sel-inscripcion"><option value="220">Inscripción — $220.00</option><option value="170">Reinscripción — $170.00</option></select></div>
+                <div class="fg"><label>Tipo de Plan</label><select><option>Mensualidad</option><option>Matronatación</option><option>Preequipo — $505</option><option>Equipo — $250</option></select></div>
+                <div class="fg"><label>Clases por Semana</label><select><option>1 clase — $215.00</option><option>2 clases — $365.00</option><option>3 clases — $505.00</option><option>4 clases — $685.00</option><option>5 clases — $845.00</option><option>6 clases — $1,015.00</option></select></div>
+                <div class="fg"><label>Total a Cobrar</label><input value="$815.00" readonly style="font-weight:700;color:var(--azul)"></div>
+              </div>
+              <div class="section-title">Horario de Clases</div>
+              <div style="background:var(--azul-claro);border:1px solid #BFDBF7;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--azul2);margin-bottom:12px">
+                Selecciona los días que coincidan con el número de clases elegido.
+              </div>
+              <div class="fg">
+                <label>Días de Asistencia</label>
+                <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:2px">
+                  <label class="dia-chip"><input type="checkbox" checked> Lunes</label>
+                  <label class="dia-chip"><input type="checkbox"> Martes</label>
+                  <label class="dia-chip"><input type="checkbox" checked> Miércoles</label>
+                  <label class="dia-chip"><input type="checkbox" checked> Jueves</label>
+                  <label class="dia-chip"><input type="checkbox"> Viernes</label>
+                  <label class="dia-chip"><input type="checkbox"> Sábado</label>
+                </div>
+              </div>
+              <div class="form-grid2" style="margin-top:10px">
+                <div class="fg"><label>Hora de Clase</label>
+                  <select>
+                    <option>07:00 am — Mañana</option>
+                    <option>08:00 am — Mañana</option>
+                    <option>09:00 am — Mañana</option>
+                    <option>04:00 pm — Tarde</option>
+                    <option selected>05:00 pm — Tarde</option>
+                    <option>06:00 pm — Tarde</option>
+                    <option>07:00 pm — Tarde</option>
+                  </select>
+                </div>
+                <div class="fg"><label>Instructor / Grupo</label>
+                  <select>
+                    <option>Principiantes — Prof. Gómez</option>
+                    <option>Intermedio — Prof. Soto</option>
+                    <option>Avanzado — Prof. Luna</option>
+                    <option>Matronatación — Prof. Reyes</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn-add" style="width:100%;padding:12px;margin-top:4px" onclick="setTab('t-comprobante')">Guardar y Generar Comprobante</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── ASISTENCIA ─── -->
+        <div class="tab-view" id="t-asistencia">
+          <div class="attend-grid">
+            <div class="attend-box">
+              <h3>🪪 Por Credencial</h3>
+              <p>Ingresa el número de credencial del nadador</p>
+              <input class="big-num" value="024" readonly>
+              <button class="btn-add" style="margin-top:14px;width:100%;padding:11px">Registrar Entrada</button>
+            </div>
+            <div class="attend-box">
+              <h3>🔍 Por Nombre</h3>
+              <p>Escribe el nombre del nadador para buscarlo</p>
+              <input style="width:100%;border:1.5px solid var(--gris3);border-radius:8px;padding:10px 12px;font-size:13px;font-family:var(--font);margin-bottom:10px" value="María Rodríguez" readonly>
+              <div style="background:var(--gris1);border:1px solid var(--gris3);border-radius:8px;overflow:hidden">
+                <div style="padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px;border-bottom:1px solid var(--gris3)"><span><span class="av">MR</span>María Rodríguez</span><span class="pill pill-green">Activo</span></div>
+                <div style="padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-size:13px"><span><span class="av">MA</span>Mario Álvarez</span><span class="pill pill-blue">3 clases/sem</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <h2>📋 Asistencias de Hoy</h2>
+              <div style="display:flex;align-items:center;gap:8px"><span class="cmuted">12 registros</span><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div>
+            </div>
+            <table>
+              <thead><tr><th>Nadador</th><th>Credencial</th><th>Plan</th><th>Turno</th><th>Hora de Entrada</th></tr></thead>
+              <tbody>
+                <tr><td><span class="av">MR</span>María Rodríguez</td><td>#001</td><td>3 clases/sem</td><td>Mañana</td><td>07:14 am</td></tr>
+                <tr><td><span class="av">JL</span>Juan López</td><td>#002</td><td>5 clases/sem</td><td>Mañana</td><td>07:31 am</td></tr>
+                <tr><td><span class="av">LT</span>Luisa Torres</td><td>#005</td><td>1 clase/sem</td><td>Tarde</td><td>01:05 pm</td></tr>
+                <tr><td><span class="av">SC</span>Sofía Cruz</td><td>#008</td><td>Matronatación 4</td><td>Tarde</td><td>01:22 pm</td></tr>
+                <tr><td><span class="av">RV</span>Roberto Vargas</td><td>#009</td><td>Preequipo</td><td>Noche</td><td>06:10 pm</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ─── PLANES Y COSTOS ─── -->
+        <div class="tab-view" id="t-planes">
+          <div class="info-box">Todos los costos son en pesos mexicanos (MXN). La inscripción y reinscripción se cobran una sola vez. El recargo por pago tardío es de <strong>$40.00</strong>. Valoración médica: <strong>$90.00</strong> (obligatoria).</div>
+          <div class="two-col">
+            <div>
+              <div class="card">
+                <div class="card-head"><h2>Inscripción y Mensualidades</h2><div class="export-btns"><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div></div>
+                <table>
+                  <thead><tr><th>Concepto</th><th style="text-align:right">Cuota</th></tr></thead>
+                  <tbody>
+                    <tr><td colspan="2" class="costos-cat">Cuotas de Acceso</td></tr>
+                    <tr><td>Cuota de inscripción</td><td class="precio" id="td-inscripcion">$220.00</td></tr>
+                    <tr><td>Cuota de reinscripción</td><td class="precio" id="td-reinscripcion">$170.00</td></tr>
+                    <tr><td>Recargo por pago tardío</td><td class="precio" id="td-recargo">$40.00</td></tr>
+                    <tr><td colspan="2" class="costos-cat">Mensualidad — Natación</td></tr>
+                    <tr><td>1 clase a la semana</td><td class="precio" id="td-n1">$215.00</td></tr>
+                    <tr><td>2 clases a la semana</td><td class="precio" id="td-n2">$365.00</td></tr>
+                    <tr><td>3 clases a la semana</td><td class="precio" id="td-n3">$505.00</td></tr>
+                    <tr><td>4 clases a la semana</td><td class="precio" id="td-n4">$685.00</td></tr>
+                    <tr><td>5 clases a la semana</td><td class="precio" id="td-n5">$845.00</td></tr>
+                    <tr><td>6 clases a la semana</td><td class="precio" id="td-n6">$1,015.00</td></tr>
+                    <tr><td colspan="2" class="costos-cat">Otros Programas</td></tr>
+                    <tr><td>Preequipo</td><td class="precio" id="td-preequipo">$505.00</td></tr>
+                    <tr><td>Equipo</td><td class="precio" id="td-equipo">$250.00</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <div class="card">
+                <div class="card-head"><h2>Matronatación</h2><div class="export-btns"><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div></div>
+                <table>
+                  <thead><tr><th>Concepto</th><th style="text-align:right">Cuota</th></tr></thead>
+                  <tbody>
+                    <tr><td colspan="2" class="costos-cat">Mensualidad — Matronatación</td></tr>
+                    <tr><td>1 clase a la semana</td><td class="precio" id="td-m1">$258.00</td></tr>
+                    <tr><td>2 clases a la semana</td><td class="precio" id="td-m2">$438.00</td></tr>
+                    <tr><td>3 clases a la semana</td><td class="precio" id="td-m3">$606.00</td></tr>
+                    <tr><td>4 clases a la semana</td><td class="precio" id="td-m4">$822.00</td></tr>
+                    <tr><td>5 clases a la semana</td><td class="precio" id="td-m5">$1,014.00</td></tr>
+                    <tr><td>6 clases a la semana</td><td class="precio" id="td-m6">$1,218.00</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="med-box">
+                <h3>⏰ Valoración Médica — $90.00 MXN</h3>
+                <p><strong>Lunes a Viernes:</strong> 3:00 pm – 8:00 pm<br><strong>Sábado:</strong> 8:00 am – 1:00 pm<br>Obligatoria para inscribirse. Se realiza en las instalaciones del centro.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── COMPROBANTE ─── -->
+        <div class="tab-view" id="t-comprobante">
+          <div class="comprobante">
+            <div class="comp-head">
+              <h2>Comprobante de Pago</h2>
+              <p>Sistema de Gestión de Piscina — Gobierno del Estado de Guanajuato</p>
+            </div>
+            <div class="comp-body">
+              <div class="comp-row"><span class="comp-key">Folio</span><span class="comp-val">#PAG-2026-0312</span></div>
+              <div class="comp-row"><span class="comp-key">Nadador</span><span class="comp-val">Carlos Hernández Ruiz</span></div>
+              <div class="comp-row"><span class="comp-key">Credencial</span><span class="comp-val">#024</span></div>
+              <div class="comp-row"><span class="comp-key">Tipo</span><span class="comp-val">Adulto</span></div>
+              <div class="comp-row"><span class="comp-key">Concepto</span><span class="comp-val">Inscripción + Mensualidad 3 clases/sem</span></div>
+              <div class="comp-row"><span class="comp-key">Valoración Médica</span><span class="comp-val">Aprobada — $90.00</span></div>
+              <div class="comp-row"><span class="comp-key">Período</span><span class="comp-val">01/04/2026 – 30/04/2026</span></div>
+              <div class="comp-row"><span class="comp-key">Método de Pago</span><span class="comp-val">Efectivo</span></div>
+              <div class="comp-row"><span class="comp-key">Fecha de Pago</span><span class="comp-val">17/03/2026</span></div>
+              <div class="comp-total"><span>Total Pagado</span><span>$815.00</span></div>
+              <p class="comp-note">Inscripción $220 + Mensualidad 3 clases $505 + Val. Médica $90</p>
+              <div style="margin-top:16px;display:flex;gap:10px">
+                <button class="btn-pdf" style="flex:1;padding:12px">⬇ Descargar PDF</button>
+                <button class="btn-xls" style="flex:1;padding:12px">⬇ Exportar Excel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── RENOVACIÓN ─── -->
+        <div class="tab-view" id="t-renovacion">
+
+          <!-- ESTADO DEL PAGO -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px">
+            <div id="renov-opt-tiempo" class="renov-option active-opt" onclick="selectRenovTipo('tiempo')">
+              <div class="renov-opt-icon" style="background:#DCFCE7;color:#166534">✓</div>
+              <div class="renov-opt-title">Pago a Tiempo</div>
+              <div class="renov-opt-desc">Solo se cobran las clases. Sin cargos adicionales.</div>
+              <div class="renov-opt-tag" style="background:#DCFCE7;color:#166534">Sin recargo · Sin reinscripción</div>
+            </div>
+            <div id="renov-opt-tardio" class="renov-option" onclick="selectRenovTipo('tardio')">
+              <div class="renov-opt-icon" style="background:#FEF9C3;color:#854D0E">⚠</div>
+              <div class="renov-opt-title">Pago Tardío</div>
+              <div class="renov-opt-desc">Se cobran las clases más el recargo por mora.</div>
+              <div class="renov-opt-tag" style="background:#FEF9C3;color:#854D0E">+ Recargo $<span id="renov-recargo-tag">40.00</span></div>
+            </div>
+            <div id="renov-opt-reinscripcion" class="renov-option" onclick="selectRenovTipo('reinscripcion')">
+              <div class="renov-opt-icon" style="background:#FEE2E2;color:#991B1B">✕</div>
+              <div class="renov-opt-title">Fuera de Plazo</div>
+              <div class="renov-opt-desc">Se cobran las clases más la reinscripción. El recargo ya no aplica.</div>
+              <div class="renov-opt-tag" style="background:#FEE2E2;color:#991B1B">+ Reinscripción $<span id="renov-reinsc-tag">170.00</span></div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="card">
+              <div class="card-head"><h2>Registrar Renovación</h2><span id="renov-tipo-badge" class="pill pill-green"><span class="pill-dot"></span>Pago a Tiempo</span></div>
+              <div style="padding:22px">
+                <div class="fg"><label>Nadador</label>
+                  <select id="renov-nadador">
+                    <option value="maria">María Rodríguez (#001) — 3 clases/sem</option>
+                    <option value="ana">Ana Navarro (#003) — Matron. 2 clases</option>
+                    <option value="pedro">Pedro García (#004) — Preequipo</option>
+                    <option value="luisa">Luisa Torres (#005) — 1 clase/sem</option>
+                  </select>
+                </div>
+                <div class="fg"><label>Tipo de Plan</label>
+                  <select id="renov-tipo-plan">
+                    <option>Mensualidad</option><option>Matronatación</option>
+                    <option>Preequipo — $505</option><option>Equipo — $250</option>
+                  </select>
+                </div>
+                <div class="fg"><label>Clases por Semana</label>
+                  <select id="sel-clases-renov" onchange="calcRenov()">
+                    <option value="215">1 clase — $215.00</option>
+                    <option value="365">2 clases — $365.00</option>
+                    <option value="505" selected>3 clases — $505.00</option>
+                    <option value="685">4 clases — $685.00</option>
+                    <option value="845">5 clases — $845.00</option>
+                    <option value="1015">6 clases — $1,015.00</option>
+                  </select>
+                </div>
+
+                <!-- Días de clase (dinámico según clases/sem) -->
+                <div class="fg">
+                  <label>Días de Clase</label>
+                  <div id="dias-renov" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px">
+                    <label class="dia-chip"><input type="checkbox" checked> Lun</label>
+                    <label class="dia-chip"><input type="checkbox"> Mar</label>
+                    <label class="dia-chip"><input type="checkbox" checked> Mié</label>
+                    <label class="dia-chip"><input type="checkbox" checked> Jue</label>
+                    <label class="dia-chip"><input type="checkbox"> Vie</label>
+                    <label class="dia-chip"><input type="checkbox"> Sáb</label>
+                  </div>
+                </div>
+                <div class="fg"><label>Hora de Clase</label>
+                  <select>
+                    <option>07:00 am — Mañana</option>
+                    <option>08:00 am — Mañana</option>
+                    <option>09:00 am — Mañana</option>
+                    <option>04:00 pm — Tarde</option>
+                    <option selected>05:00 pm — Tarde</option>
+                    <option>06:00 pm — Tarde</option>
+                    <option>07:00 pm — Tarde</option>
+                  </select>
+                </div>
+
+                <!-- Desglose de costo -->
+                <div id="renov-desglose" style="background:var(--gris1);border:1px solid var(--gris3);border-radius:8px;padding:12px 14px;margin-bottom:14px">
+                  <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--gris3)"><span style="color:var(--muted)">Clases (3/sem)</span><span id="renov-subtotal-clases">$505.00</span></div>
+                  <div id="renov-fila-recargo" style="display:none;justify-content:space-between;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--gris3);color:var(--amarillo)"><span>Recargo tardío</span><span id="renov-val-recargo">$40.00</span></div>
+                  <div id="renov-fila-reinsc" style="display:none;justify-content:space-between;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--gris3);color:var(--rojo)"><span>Reinscripción</span><span id="renov-val-reinsc">$170.00</span></div>
+                  <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--azul);padding:6px 0 2px"><span>Total</span><span id="renov-total">$505.00</span></div>
+                </div>
+
+                <div class="fg"><label>Método de Pago</label>
+                  <select><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option></select>
+                </div>
+                <button class="btn-add" style="width:100%;padding:12px" onclick="setTab('t-comprobante')">Registrar y Generar Comprobante</button>
+              </div>
+            </div>
+
+            <!-- TABLA PRÓXIMOS VENCIMIENTOS CON FILTROS -->
+            <div class="card">
+              <div class="card-head"><h2>Próximos Vencimientos</h2></div>
+              <div style="padding:12px 16px;border-bottom:1px solid var(--gris3);display:flex;gap:8px;flex-wrap:wrap">
+                <input type="text" id="filt-nombre" placeholder="🔍 Nombre..." oninput="filtrarVenc()"
+                  style="flex:1;min-width:100px;border:1.5px solid var(--gris3);border-radius:7px;padding:6px 10px;font-size:12px;font-family:var(--font);outline:none">
+                <select id="filt-plan" onchange="filtrarVenc()"
+                  style="border:1.5px solid var(--gris3);border-radius:7px;padding:6px 8px;font-size:12px;font-family:var(--font);outline:none;color:var(--texto)">
+                  <option value="">Todos los planes</option>
+                  <option value="clases">Mensualidad</option>
+                  <option value="matron">Matronatación</option>
+                  <option value="preequipo">Preequipo</option>
+                  <option value="equipo">Equipo</option>
+                </select>
+                <select id="filt-estado" onchange="filtrarVenc()"
+                  style="border:1.5px solid var(--gris3);border-radius:7px;padding:6px 8px;font-size:12px;font-family:var(--font);outline:none;color:var(--texto)">
+                  <option value="">Todos los estados</option>
+                  <option value="hoy">Vence hoy</option>
+                  <option value="pronto">Próximos 7 días</option>
+                  <option value="vencido">Vencidos</option>
+                </select>
+                <select id="filt-orden" onchange="filtrarVenc()"
+                  style="border:1.5px solid var(--gris3);border-radius:7px;padding:6px 8px;font-size:12px;font-family:var(--font);outline:none;color:var(--texto)">
+                  <option value="fecha">Ordenar por fecha</option>
+                  <option value="nombre">Ordenar por nombre</option>
+                  <option value="plan">Ordenar por plan</option>
+                </select>
+              </div>
+              <table>
+                <thead><tr><th>Nadador</th><th>Plan</th><th>Días</th><th>Vence</th><th>Estado</th></tr></thead>
+                <tbody id="venc-tbody"></tbody>
+              </table>
+              <div id="venc-empty" style="display:none;text-align:center;padding:24px;font-size:13px;color:var(--muted)">Sin resultados</div>
+            </div>
+          </div>
+        </div>
+
+<!-- ─── AJUSTES ─── -->
+        <div class="tab-view" id="t-ajustes">
+          <div class="settings-card">
+            <h3>Información del Centro</h3>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Nombre del Centro</div><div style="font-size:11px;color:var(--muted)">Piscina Municipal Guanajuato</div></div><button class="act-btn">Editar</button></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Administrador</div><div style="font-size:11px;color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5736333a3e391730223639363d2236233879303835793a2f">[email&#160;protected]</a></div></div><button class="act-btn">Cambiar</button></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Versión del Sistema</div><div style="font-size:11px;color:var(--muted)">v1.0.0 — Sistema de Gestión de Piscina</div></div><span class="pill pill-green">Actualizado</span></div>
+          </div>
+          
+          <!-- EDITOR DE PRECIOS -->
+          <div class="settings-card" style="margin-top:0">
+            <h3>&#128176; Ajustar Precios y Tarifas</h3>
+            <div style="background:var(--azul-claro);border:1px solid #BFDBF7;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--azul2);margin-bottom:18px">
+              Modifica cualquier tarifa — se actualiza en Planes, Nuevo Nadador y Renovaci&#243;n al instante.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+              <div style="padding-right:20px;border-right:1px solid var(--gris3)">
+                <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Cuotas de Acceso</div>
+                <div class="price-row"><label>Inscripci&#243;n</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-inscripcion" value="220" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>Reinscripci&#243;n</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-reinscripcion" value="170" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>Recargo tard&#237;o</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-recargo" value="40" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>Valoraci&#243;n m&#233;dica</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-medica" value="90" oninput="syncPrices()"></div></div>
+                <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px">Mensualidad &mdash; Nataci&#243;n</div>
+                <div class="price-row"><label>1 clase/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-n1" value="215" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>2 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-n2" value="365" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>3 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-n3" value="505" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>4 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-n4" value="685" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>5 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-n5" value="845" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>6 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-n6" value="1015" oninput="syncPrices()"></div></div>
+                <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px">Otros Programas</div>
+                <div class="price-row"><label>Preequipo</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-preequipo" value="505" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>Equipo</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-equipo" value="250" oninput="syncPrices()"></div></div>
+              </div>
+              <div style="padding-left:20px">
+                <div style="font-size:11px;font-weight:700;color:var(--azul);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Mensualidad &mdash; Matronaci&#243;n</div>
+                <div class="price-row"><label>1 clase/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-m1" value="258" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>2 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-m2" value="438" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>3 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-m3" value="606" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>4 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-m4" value="822" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>5 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-m5" value="1014" oninput="syncPrices()"></div></div>
+                <div class="price-row"><label>6 clases/sem</label><div class="price-input-wrap"><span>$</span><input type="number" id="p-m6" value="1218" oninput="syncPrices()"></div></div>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:10px">
+              <button class="btn-add" onclick="syncPrices();showToast('Precios actualizados')" style="flex:1;padding:11px">Guardar Cambios</button>
+              <button class="act-btn" onclick="resetPrices()" style="padding:11px 18px">Restaurar originales</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h3>Notificaciones</h3>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Alertas de vencimiento (3 días antes)</div><div style="font-size:11px;color:var(--muted)">Avisar cuando un plan esté por vencer</div></div><div class="toggle"></div></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Reporte diario automático</div><div style="font-size:11px;color:var(--muted)">Resumen de asistencias al cierre del día</div></div><div class="toggle"></div></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Recordatorio de recargo</div><div style="font-size:11px;color:var(--muted)">Notificar nadadores con pago tardío</div></div><div class="toggle off"></div></div>
+          </div>
+          <div class="settings-card">
+            <h3>Exportar Datos</h3>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Lista completa de nadadores</div><div style="font-size:11px;color:var(--muted)">Nombre, plan, estado y datos de contacto</div></div><div class="export-btns"><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Historial de pagos del mes</div><div style="font-size:11px;color:var(--muted)">Todos los movimientos y cobros registrados</div></div><div class="export-btns"><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Registro de asistencias</div><div style="font-size:11px;color:var(--muted)">Asistencia por nadador, fecha y turno</div></div><div class="export-btns"><button class="btn-pdf">PDF</button><button class="btn-xls">Excel</button></div></div>
+            <div class="setting-row"><div><div style="font-size:13px;font-weight:600">Último respaldo automático</div><div style="font-size:11px;color:var(--muted)">17/03/2026 — 08:00 am</div></div><button class="act-btn">Respaldar ahora</button></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-msg" id="toast-msg"></div>
+
+<script>
+// ── DATA DE VENCIMIENTOS ──────────────────────────────────────
+const vencData = [
+  {nombre:'María Rodríguez', ini:'MR', plan:'Mensualidad', planKey:'clases', clases:'3 clases/sem', dias:'Lun·Mié·Vie', diasNum:3, fecha:'2026-03-17', diasRestantes:0},
+  {nombre:'Ana Navarro',     ini:'AN', plan:'Matronatación', planKey:'matron', clases:'2 clases/sem', dias:'Mar·Jue', diasNum:2, fecha:'2026-03-19', diasRestantes:2},
+  {nombre:'Pedro García',    ini:'PG', plan:'Preequipo', planKey:'preequipo', clases:'—', dias:'Lun·Mar·Mié·Jue·Vie', diasNum:5, fecha:'2026-03-22', diasRestantes:5},
+  {nombre:'Luisa Torres',    ini:'LT', plan:'Mensualidad', planKey:'clases', clases:'1 clase/sem', dias:'Miércoles', diasNum:1, fecha:'2026-04-05', diasRestantes:19},
+  {nombre:'Sofía Cruz',      ini:'SC', plan:'Matronatación', planKey:'matron', clases:'4 clases/sem', dias:'Lun·Mar·Jue·Vie', diasNum:4, fecha:'2026-04-01', diasRestantes:15},
+  {nombre:'Carlos Méndez',   ini:'CM', plan:'Mensualidad', planKey:'clases', clases:'5 clases/sem', dias:'Lun·Mar·Mié·Jue·Vie', diasNum:5, fecha:'2026-04-12', diasRestantes:26},
+];
+
+function renderVenc(data){
+  const tbody = document.getElementById('venc-tbody');
+  const empty = document.getElementById('venc-empty');
+  if(!data.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML = data.map(r=>{
+    let badge, estado;
+    if(r.diasRestantes<=0){ badge='pill-red'; estado='Vencido'; }
+    else if(r.diasRestantes<=3){ badge='pill-yellow'; estado='Hoy/'+r.diasRestantes+'d'; }
+    else if(r.diasRestantes<=7){ badge='pill-yellow'; estado=r.diasRestantes+' días'; }
+    else{ badge='pill-green'; estado=r.diasRestantes+' días'; }
+    return `<tr>
+      <td><span class="av">${r.ini}</span>${r.nombre}</td>
+      <td><span style="font-size:12px">${r.plan}<br><span style="color:var(--muted);font-size:11px">${r.clases}</span></span></td>
+      <td style="font-size:11px;color:var(--muted)">${r.dias}</td>
+      <td style="font-size:12px">${r.fecha.split('-').reverse().join('/')}</td>
+      <td><span class="pill ${badge}"><span class="pill-dot"></span>${estado}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function filtrarVenc(){
+  const nombre = document.getElementById('filt-nombre').value.toLowerCase();
+  const plan   = document.getElementById('filt-plan').value;
+  const estado = document.getElementById('filt-estado').value;
+  const orden  = document.getElementById('filt-orden').value;
+
+  let data = vencData.filter(r=>{
+    if(nombre && !r.nombre.toLowerCase().includes(nombre)) return false;
+    if(plan && r.planKey !== plan) return false;
+    if(estado==='hoy' && r.diasRestantes!==0) return false;
+    if(estado==='pronto' && (r.diasRestantes<0||r.diasRestantes>7)) return false;
+    if(estado==='vencido' && r.diasRestantes>0) return false;
+    return true;
+  });
+
+  if(orden==='nombre') data.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  else if(orden==='plan') data.sort((a,b)=>a.plan.localeCompare(b.plan));
+  else data.sort((a,b)=>a.diasRestantes-b.diasRestantes);
+
+  renderVenc(data);
+}
+
+// ── RENOVACIÓN TIPO ───────────────────────────────────────────
+let renovTipo = 'tiempo';
+function selectRenovTipo(tipo){
+  renovTipo = tipo;
+  ['tiempo','tardio','reinscripcion'].forEach(t=>{
+    document.getElementById('renov-opt-'+t).classList.toggle('active-opt', t===tipo);
+  });
+  const badge = document.getElementById('renov-tipo-badge');
+  if(tipo==='tiempo'){
+    badge.className='pill pill-green'; badge.innerHTML='<span class="pill-dot"></span>Pago a Tiempo';
+  } else if(tipo==='tardio'){
+    badge.className='pill pill-yellow'; badge.innerHTML='<span class="pill-dot"></span>Pago Tardío';
+  } else {
+    badge.className='pill pill-red'; badge.innerHTML='<span class="pill-dot"></span>Fuera de Plazo';
+  }
+  calcRenov();
+}
+
+function calcRenov(){
+  const clases = Number(document.getElementById('sel-clases-renov').value)||505;
+  const recargo    = Number(document.getElementById('p-recargo')?.value)||40;
+  const reinscVal  = Number(document.getElementById('p-reinscripcion')?.value)||170;
+
+  const filaRec  = document.getElementById('renov-fila-recargo');
+  const filaRei  = document.getElementById('renov-fila-reinsc');
+
+  document.getElementById('renov-subtotal-clases').textContent = fmt(clases);
+  document.getElementById('renov-val-recargo').textContent = fmt(recargo);
+  document.getElementById('renov-val-reinsc').textContent  = fmt(reinscVal);
+
+  let total = clases;
+  filaRec.style.display = 'none';
+  filaRei.style.display = 'none';
+
+  if(renovTipo==='tardio'){
+    filaRec.style.display='flex';
+    total += recargo;
+  } else if(renovTipo==='reinscripcion'){
+    filaRei.style.display='flex';
+    total += reinscVal;
+  }
+  document.getElementById('renov-total').textContent = fmt(total);
+}
+
+// ── PRICES ────────────────────────────────────────────────────
+const DEFAULTS = {
+  inscripcion:220, reinscripcion:170, recargo:40, medica:90,
+  n1:215, n2:365, n3:505, n4:685, n5:845, n6:1015,
+  preequipo:505, equipo:250,
+  m1:258, m2:438, m3:606, m4:822, m5:1014, m6:1218
+};
+
+function fmt(n){ return '$'+Number(n).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function v(id){ const el=document.getElementById(id); return el?Number(el.value)||0:0; }
+
+function syncPrices(){
+  const p = {
+    inscripcion:v('p-inscripcion'), reinscripcion:v('p-reinscripcion'),
+    recargo:v('p-recargo'), medica:v('p-medica'),
+    n1:v('p-n1'),n2:v('p-n2'),n3:v('p-n3'),n4:v('p-n4'),n5:v('p-n5'),n6:v('p-n6'),
+    preequipo:v('p-preequipo'), equipo:v('p-equipo'),
+    m1:v('p-m1'),m2:v('p-m2'),m3:v('p-m3'),m4:v('p-m4'),m5:v('p-m5'),m6:v('p-m6')
+  };
+  const ids = {
+    'td-inscripcion':p.inscripcion,'td-reinscripcion':p.reinscripcion,
+    'td-recargo':p.recargo,'td-medica':p.medica,
+    'td-n1':p.n1,'td-n2':p.n2,'td-n3':p.n3,'td-n4':p.n4,'td-n5':p.n5,'td-n6':p.n6,
+    'td-preequipo':p.preequipo,'td-equipo':p.equipo,
+    'td-m1':p.m1,'td-m2':p.m2,'td-m3':p.m3,'td-m4':p.m4,'td-m5':p.m5,'td-m6':p.m6
+  };
+  Object.entries(ids).forEach(([id,val])=>{ const el=document.getElementById(id); if(el) el.textContent=fmt(val); });
+
+  const selN = document.getElementById('sel-clases-nat');
+  if(selN) selN.innerHTML = [1,2,3,4,5,6].map((n,i)=>`<option value="${[p.n1,p.n2,p.n3,p.n4,p.n5,p.n6][i]}">${n} clase${n>1?'s':''} — ${fmt([p.n1,p.n2,p.n3,p.n4,p.n5,p.n6][i])}</option>`).join('');
+  const selR = document.getElementById('sel-clases-renov');
+  if(selR) selR.innerHTML = [1,2,3,4,5,6].map((n,i)=>`<option value="${[p.n1,p.n2,p.n3,p.n4,p.n5,p.n6][i]}">${n} clase${n>1?'s':''} — ${fmt([p.n1,p.n2,p.n3,p.n4,p.n5,p.n6][i])}</option>`).join('');
+  const selI = document.getElementById('sel-inscripcion');
+  if(selI) selI.innerHTML = `<option value="${p.inscripcion}">Inscripción — ${fmt(p.inscripcion)}</option><option value="${p.reinscripcion}">Reinscripción — ${fmt(p.reinscripcion)}</option>`;
+
+  // update tags in renovación options
+  const rt = document.getElementById('renov-recargo-tag');
+  if(rt) rt.textContent = p.recargo.toFixed(2);
+  const ri = document.getElementById('renov-reinsc-tag');
+  if(ri) ri.textContent = p.reinscripcion.toFixed(2);
+
+  calcRenov();
+}
+
+function resetPrices(){
+  Object.entries(DEFAULTS).forEach(([k,val])=>{ const el=document.getElementById('p-'+k); if(el) el.value=val; });
+  syncPrices();
+  showToast('Precios restaurados a valores originales');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast-msg');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── NAVEGACIÓN ────────────────────────────────────────────────
+const titles = {
+  't-reportes':   ['Reportes de Nadadores',   'Vista general del sistema'],
+  't-nadadores':  ['Nuevo Nadador',            'Requisitos, documentos y registro'],
+  't-asistencia': ['Control de Asistencia',   'Registro de entradas del día'],
+  't-planes':     ['Planes y Costos',          'Tarifas oficiales vigentes'],
+  't-comprobante':['Comprobante de Pago',      'Genera y exporta comprobantes'],
+  't-renovacion': ['Renovación de Plan',       'Gestión de reinscripciones'],
+  't-ajustes':    ['Ajustes del Sistema',      'Configuración y exportación de datos']
+};
+const navMap = {
+  't-reportes':'nav-reportes','t-nadadores':'nav-nadadores',
+  't-asistencia':'nav-asistencia','t-planes':'nav-planes',
+  't-comprobante':'nav-comprobante','t-renovacion':'nav-renovacion','t-ajustes':'nav-ajustes'
+};
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function setTab(id){
+  document.querySelectorAll('.tab-view').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.s-item').forEach(s=>s.classList.remove('active'));
+  if(navMap[id]) document.getElementById(navMap[id]).classList.add('active');
+  const t=titles[id]||['',''];
+  document.getElementById('app-title').textContent=t[0];
+  document.getElementById('app-sub').textContent=t[1];
+  const showExport=['t-reportes','t-asistencia','t-planes'].includes(id);
+  document.getElementById('hdr-export').style.display=showExport?'flex':'none';
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  syncPrices();
+  filtrarVenc();
+});
+</script>
+</body>
+</html>
